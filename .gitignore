@@ -1,0 +1,4 @@
+node_modules
+public/compiled
+public/compiled/bundle.js
+config.js
