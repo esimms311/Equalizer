@@ -6,18 +6,19 @@ var bodyParser = require('body-parser');
 var massive = require('massive');
 var cors = require('cors');
 var cookieParser = require('cookie-parser');
+var config = require('./config');
 // var config = require('./config');
 
 // var port = 4000;
 
-var app = module.exports = express();
+var app = express();
 // var app = express();
 app.set('port', (process.env.PORT || 5000))
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(cors());
 app.use(session({
-    secret:config.secret,
+    secret: config.secret,
     resave: false,
     saveUninitialized: false
 }))
@@ -32,9 +33,9 @@ app.use(passport.session());
 app.use(express.static(__dirname + '/public'));
 
 // Connects to Postgres
-var db = massive.connectSync({
-  connectionString: 'postgres://postgres:postgres@localhost/equalizer'
-});
+// var db = massive.connectSync({
+//     connectionString: 'postgres://postgres:postgres@localhost/Equalizer'
+// });
 
 //Facebook Strategy
 passport.use('facebook', new facebookStrategy({
@@ -68,7 +69,7 @@ passport.deserializeUser(function(user, done) {
       return done(null, us[0]);
     })
   } else {
-    db.getUserByFAcebookId([user.facebookid], function(err, u) {
+    db.getUserByFacebookId([user.facebookid], function(err, u) {
       return done(null, u[0]);
     })
   }
